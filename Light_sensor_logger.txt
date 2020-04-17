@@ -1,0 +1,36 @@
+// ------------
+// Light Sensor Logger
+// ------------
+
+int led1 = A5;      //classifies both LED
+int led2 = D7;
+
+int photoresistor = A0;     //classifies the light sensor on A0
+int analogValue;            //classifies value of light
+
+void setup() {
+  pinMode(led1, OUTPUT);            //puts both LED's as outputs 
+  pinMode(led2, OUTPUT);
+  pinMode(photoresistor, INPUT);    //puts light sensor as output
+  
+}
+
+void loop() {
+    
+  analogValue = analogRead(photoresistor);      //light is
+  
+
+  String light = String(analogValue);           //The read value of light is turned into a string
+  Particle.publish("light", light, PRIVATE);    //the string is then sent to the thinkspeaks graph every 30 seconds
+  delay(30000);               
+  
+    //indicator that light is being detected bellow 
+  
+    if (analogValue > 15) {                     //This shows that if there is light then the light will turn off 
+      digitalWrite(led1, LOW);
+      digitalWrite(led2, LOW);
+  } else if (analogValue < 14) {                //This shows that if there is no light/dark then the light will turn on
+      digitalWrite(led1, HIGH);
+      digitalWrite(led2, HIGH);
+  }
+}
